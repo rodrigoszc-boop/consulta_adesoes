@@ -4,7 +4,6 @@ import json
 import re
 from datetime import datetime as dt, timedelta as td
 from typing import Dict, List, Optional, Tuple
-
 import aiohttp
 import folium
 import streamlit as st
@@ -16,6 +15,7 @@ DATE_RANGE_DAYS = 360
 PAGE_SIZE = {"Material": 100, "Serviço": 100}
 BR_GEOJSON_PATH = "brasil-estados.geojson"
 BR_MUN_GEOJSON_PATH = "brasil-municipios.geojson"
+FEEDBACK_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSezbh3FqKnysgDFlC62kncVgndl2ie2nyYswDF55QcBPDtAqA/viewform?usp=publish-editor"
 
 
 st.set_page_config(
@@ -77,6 +77,24 @@ CUSTOM_CSS = """
         height: 650px !important;
         min-height: 650px !important;
         width: 100% !important;
+    }
+    .feedback-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background: #0f1627;
+        border: 1px solid #1f2937;
+        border-radius: 18px;
+        padding: 0.45rem 0.85rem;
+        color: #e2e8f0 !important;
+        font-weight: 700;
+        white-space: nowrap;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .feedback-link:hover {
+        background: #111d34;
+        color: #ffffff !important;
     }
 </style>
 """
@@ -323,6 +341,11 @@ def compute_municipio_centroids(geojson: Dict) -> Dict[str, Tuple[float, float]]
     return centroids
 
 
+def get_feedback_link() -> str:
+    """Retorna o link do formulário de feedback."""
+    return FEEDBACK_FORM_URL
+
+
 async def fetch_page(
     session: aiohttp.ClientSession,
     semaphore: asyncio.Semaphore,
@@ -533,6 +556,16 @@ acanto = base64.b64encode(acanto).decode()
 
 def main() -> None:
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+
+    feedback_link = get_feedback_link()
+    st.markdown(
+        f"""
+        <div style="display:flex; justify-content:flex-end; margin-top:6px; margin-bottom:6px;">
+            <a class="feedback-link" href="{feedback_link}" target="_blank" rel="noopener noreferrer">Sugestoes, reclamacoes, pedidos ou elogios</a>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     st.markdown(
         f"""
