@@ -561,7 +561,7 @@ def main() -> None:
     st.markdown(
         f"""
         <div style="display:flex; justify-content:flex-end; margin-top:6px; margin-bottom:6px;">
-            <a class="feedback-link" href="{feedback_link}" target="_blank" rel="noopener noreferrer">Sugestoes, reclamacoes, pedidos ou elogios</a>
+            <a class="feedback-link" href="{feedback_link}" target="_blank" rel="noopener noreferrer">Sugestões, reclamações, pedidos ou elogios</a>
         </div>
         """,
         unsafe_allow_html=True,
